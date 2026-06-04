@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shikaku — Puzzle Game</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0d0d1a;
+      color: #e0e0f0;
+      min-height: 100vh;
+    }
+
+    /* ── NAV ── */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 32px;
+      border-bottom: 1px solid #1e1e3a;
+      position: sticky;
+      top: 0;
+      background: rgba(13,13,26,0.92);
+      backdrop-filter: blur(12px);
+      z-index: 100;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .nav-icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, #6c63ff, #9d97ff);
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+
+    .nav-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 1px;
+    }
+
+    .nav-links { display: flex; gap: 8px; }
+
+    .nav-link {
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #8888aa;
+      text-decoration: none;
+      border: 1px solid transparent;
+      transition: all .2s;
+    }
+
+    .nav-link:hover {
+      color: #c8c4ff;
+      border-color: #2a2a4a;
+      background: #1a1a2e;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 80px 24px 64px;
+    }
+
+    .hero-icon {
+      width: 100px;
+      height: 100px;
+      background: linear-gradient(135deg, #6c63ff, #9d97ff);
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      margin-bottom: 28px;
+      box-shadow: 0 0 48px rgba(108,99,255,0.35);
+    }
+
+    .hero h1 {
+      font-size: 48px;
+      font-weight: 800;
+      letter-spacing: 6px;
+      background: linear-gradient(135deg, #6c63ff, #c8c4ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 12px;
+    }
+
+    .hero-sub {
+      font-size: 17px;
+      color: #8888aa;
+      letter-spacing: 2px;
+      margin-bottom: 36px;
+    }
+
+    .badge-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 48px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      border: 1px solid;
+    }
+
+    .badge-purple { color: #9d97ff; border-color: rgba(108,99,255,0.4); background: rgba(108,99,255,0.1); }
+    .badge-green  { color: #00e676; border-color: rgba(0,230,118,0.4);  background: rgba(0,230,118,0.1); }
+    .badge-yellow { color: #ffd740; border-color: rgba(255,215,64,0.4); background: rgba(255,215,64,0.1); }
+
+    /* ── CARDS ── */
+    .section { padding: 0 24px 64px; max-width: 800px; margin: 0 auto; }
+
+    .section-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: #6c63ff;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: #1a1a2e;
+      border: 1px solid #2a2a4a;
+      border-radius: 16px;
+      padding: 24px;
+      text-decoration: none;
+      transition: all .2s;
+      display: block;
+    }
+
+    .card:hover {
+      border-color: #6c63ff;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(108,99,255,0.15);
+    }
+
+    .card-icon {
+      font-size: 28px;
+      margin-bottom: 14px;
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .card-desc {
+      font-size: 13px;
+      color: #6666aa;
+      line-height: 1.5;
+    }
+
+    .card-arrow {
+      display: inline-block;
+      margin-top: 14px;
+      font-size: 12px;
+      color: #6c63ff;
+      font-weight: 600;
+    }
+
+    /* ── CONTACT ── */
+    .contact-section {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    .contact-box {
+      background: linear-gradient(135deg, rgba(108,99,255,0.12), rgba(157,151,255,0.06));
+      border: 1px solid rgba(108,99,255,0.3);
+      border-radius: 20px;
+      padding: 36px;
+      text-align: center;
+    }
+
+    .contact-box h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .contact-box p {
+      font-size: 14px;
+      color: #8888aa;
+      margin-bottom: 20px;
+    }
+
+    .contact-email {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      background: #1a1a2e;
+      border: 1px solid #2a2a4a;
+      border-radius: 12px;
+      text-decoration: none;
+      color: #9d97ff;
+      font-size: 15px;
+      font-weight: 600;
+      transition: all .2s;
+    }
+
+    .contact-email:hover {
+      border-color: #6c63ff;
+      background: rgba(108,99,255,0.1);
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      height: 1px;
+      background: #1e1e3a;
+      max-width: 800px;
+      margin: 0 auto 48px;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 24px;
+      font-size: 12px;
+      color: #333355;
+      border-top: 1px solid #1e1e3a;
+    }
+
+    footer a { color: #555577; text-decoration: none; }
+    footer a:hover { color: #8888aa; }
+
+    @media (max-width: 480px) {
+      nav { padding: 14px 16px; }
+      .hero h1 { font-size: 36px; letter-spacing: 4px; }
+      .hero-icon { width: 80px; height: 80px; font-size: 36px; }
+      .contact-box { padding: 24px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a class="nav-logo" href="#">
+      <div class="nav-icon">◼</div>
+      <span class="nav-title">SHIKAKU</span>
+    </a>
+    <div class="nav-links">
+      <a class="nav-link" href="privacy-policy.html">Privacy Policy</a>
+      <a class="nav-link" href="terms-of-service.html">Terms of Service</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-icon">◼</div>
+    <h1>SHIKAKU</h1>
+    <p class="hero-sub">Logic Puzzle Game · iOS</p>
+    <div class="badge-row">
+      <span class="badge badge-purple">⬡ 200 Levels</span>
+      <span class="badge badge-green">✓ No Account Required</span>
+      <span class="badge badge-yellow">★ Free to Play</span>
+    </div>
+  </div>
+
+  <!-- LINKS -->
+  <div class="section">
+    <p class="section-title">Legal</p>
+    <div class="cards">
+
+      <a class="card" href="privacy-policy.html">
+        <div class="card-icon">🔒</div>
+        <div class="card-title">Privacy Policy</div>
+        <div class="card-desc">Hangi verilerin toplandığı ve nasıl kullanıldığı hakkında bilgi edinin.</div>
+        <span class="card-arrow">Read →</span>
+      </a>
+
+      <a class="card" href="terms-of-service.html">
+        <div class="card-icon">📋</div>
+        <div class="card-title">Terms of Service</div>
+        <div class="card-desc">Uygulamayı kullanırken geçerli olan kurallar ve koşullar.</div>
+        <span class="card-arrow">Read →</span>
+      </a>
+
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- CONTACT -->
+  <div class="contact-section">
+    <p class="section-title">İletişim / Contact</p>
+    <div class="contact-box">
+      <h2>Bir sorun mu var?</h2>
+      <p>Geri bildirim, hata bildirimi veya gizlilik ile ilgili sorularınız için bize ulaşın.</p>
+      <a class="contact-email" href="mailto:ufuksahin.dev@gmail.com">
+        ✉ ufuksahin.dev@gmail.com
+      </a>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    © 2026 Shikaku &nbsp;·&nbsp;
+    <a href="privacy-policy.html">Privacy Policy</a> &nbsp;·&nbsp;
+    <a href="terms-of-service.html">Terms of Service</a>
+  </footer>
+
+</body>
+</html>
